@@ -1,5 +1,5 @@
 import { OdooVersion } from './odoo-version';
-import { v1 as uuidv1 } from 'uuid';
+import { v1  } from 'uuid';
 import { OdooResponse } from './odoo-response';
 import axios, { AxiosRequestConfig, AxiosInstance } from 'axios';
 
@@ -72,7 +72,7 @@ export class OdooConnector {
       jsonrpc: '2.0',
       method: 'call',
       params: params,
-      id: uuidv1,
+      id: v1(),
     };
   }
 

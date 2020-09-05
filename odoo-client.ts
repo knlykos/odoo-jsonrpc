@@ -42,6 +42,27 @@ export class OdooClient extends OdooConnector {
     return await this.callKW(model, 'read', [ids, fields], kwargs, context);
   }
 
+  async searchRead(
+    model: string,
+    domain: any[],
+    fields: string[],
+    offset = 0,
+    limit = 0,
+    order = 'create_date'
+  ): Promise<OdooResponse> {
+    const url = this.createPath('/web/dataset/search_read');
+    const params = {
+      model: model,
+      fields: fields,
+      domain: domain,
+      context: {},
+      offset: offset,
+      limit: limit,
+      sort: order,
+    };
+    return await this.callRequest(url, this.createPayload(params));
+  }
+
   async callKW(
     model: string,
     method: string,
@@ -62,22 +83,28 @@ export class OdooClient extends OdooConnector {
     return await this.callRequest(url, this.createPayload(params));
   }
 
-
-async create(model: string, values: any):   Promise<OdooResponse> {
-    return await this.callKW(model, "create", [values]);
+  async create(model: string, values: any): Promise<OdooResponse> {
+    return await this.callKW(model, 'create', [values]);
   }
-    // Write record with ids and values
-    async write(model: string,  ids: number[], values: any): Promise<OdooResponse> {
-        return await this.callKW(model, "write", [ids, values]);
-      }
-    
-      // Remove record from system
-      async unlink(model: string, ids: number[]): Promise<OdooResponse> {
-        return await this.callKW(model, "unlink", [ids]);
-      }
-    
-      // Call json controller
-      async callController(path: string, params: any): Promise<OdooResponse> {
-        return await this.callRequest(this.createPath(path), this.createPayload(params));
-      }
+  // Write record with ids and values
+  async write(
+    model: string,
+    ids: number[],
+    values: any
+  ): Promise<OdooResponse> {
+    return await this.callKW(model, 'write', [ids, values]);
+  }
+
+  // Remove record from system
+  async unlink(model: string, ids: number[]): Promise<OdooResponse> {
+    return await this.callKW(model, 'unlink', [ids]);
+  }
+
+  // Call json controller
+  async callController(path: string, params: any): Promise<OdooResponse> {
+    return await this.callRequest(
+      this.createPath(path),
+      this.createPayload(params)
+    );
+  }
 }
